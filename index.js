@@ -1,7 +1,12 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const env = require('dotenv').config();
-const quotes = require('./quotes'); 
+const quotes = require('./quotes');
+const server = require('./http_server/server');
+const database = require('./firebase/firebase');
+
+//Start server to print out requests to port 8000
+server();
 
 client.on('ready', () => {
     console.log('Connected as ' + client.user.tag);
@@ -35,6 +40,10 @@ client.on('message', msg => {
         else if(messageText.toLowerCase().startsWith('quote'))  {
             printQuoteText(msg);
         }
+        else if(messageText.toLowerCase().startsWith('random meme') || 
+                messageText.toLowerCase().startsWith('meme')){
+            printRandomHotMeme(msg);
+        }
     }
   });
 
@@ -42,6 +51,7 @@ function printHelpText(msg){
     let helpText = ` Hello, I'm MAFT bot.  Type '$' followed by a command to talk to me.  This is what I can do.
     $help - see command list
     $quote - get inspirational quote
+    $random meme - get random meme
     $... more dope commands awimbawayonthereway
     `
     msg.channel.send(helpText);
@@ -52,6 +62,10 @@ function printQuoteText(msg){
     let randomQuoteIdx = Math.floor(Math.random() * quotes.length)
     let {text, author} = quotes[randomQuoteIdx];
     msg.channel.send(`${text} - ${author ? author : 'anonymous'}`);
+}
+
+function printRandomHotMeme(msg){
+    //TODO
 }
 
 client.login(process.env.SECRET);
