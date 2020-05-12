@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const env = require('dotenv').config();
 const quotes = require('./quotes');
-const server = require('./http_server/server');
-const database = require('./firebase/firebase');
+const {server, code} = require('./http_server/server');
+
 
 //Start server to print out requests to port 8000
 server();
