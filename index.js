@@ -2,8 +2,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const env = require('dotenv').config();
 const quotes = require('./quotes');
-const state = require('./state');
-const auth = require('./auth');
 const redditBot = require('./reddit-bot/reddit-bot');
 const enums = require('./resources/enums');
 
