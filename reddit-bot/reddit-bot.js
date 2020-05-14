@@ -2,6 +2,8 @@ const env = require('dotenv').config();
 const enums = require('../resources/enums');
 const snoowrap = require('snoowrap');
 const rwc = require('random-weighted-choice');
+const moment = require('moment-timezone');
+moment().tz("America/Los_Angeles").format();
 
 let memeSources = [{id: 'dankmemes', weight: 3}, 
                    {id: 'memes', weight: 4},
@@ -36,6 +38,10 @@ const r = new snoowrap({
 //             console.log(posts.toJSON())
 //         }).catch(err => reject(err));
 
+const displayTimeString = (millis) => {
+    return moment(millis).tz("America/Los_Angeles").format("dddd, MMMM Do YYYY, h:mm:ss a z")
+}
+
 
 const redditBot = function({type, msg}){
     if(type == enums.randomMeme){
@@ -50,7 +56,7 @@ const redditBot = function({type, msg}){
             return `\tsubreddit: ${source.id}, chance: ${getSourceProbabilityString(source.id)}, number stored: ${source.id in memeVault ? memeVault[source.id].length : 0}, ` +
             `number sent: ${source.id in memeVault ? memeVault[source.id].countSent : 0}` 
         }).join('\n');
-        let statsString = `Memes last refreshed @ ${'lastUpdate' in timeDiff ? (new Date(timeDiff.lastUpdate)).toLocaleString() : 'unset'}\n` + 
+        let statsString = `Memes last refreshed ${'lastUpdate' in timeDiff ? (displayTimeString(timeDiff.lastUpdate)) : 'a long time ago in a galaxy far away'}\n` + 
                           `Unique memes sent since last refresh: ${memeVault.memeCache.length}\n` +
                           `Meme sources: \n${memeSourceString}\n` +
                           `Total meme count: ${memeVault.memeCount}\n` +
