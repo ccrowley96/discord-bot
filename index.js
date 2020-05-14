@@ -24,6 +24,9 @@ client.on('message', msg => {
         else if(messageText.toLowerCase().startsWith('meme')){
             printRandomHotMeme(msg);
         }
+        else if(messageText.toLowerCase().startsWith('stats')){
+            printRedditBotDevStats(msg);
+        }
     }
   });
 
@@ -32,6 +35,7 @@ function printHelpText(msg){
     $help - see command list
     $quote - get inspirational quote
     $meme - get random hot meme (refreshed every 30 mins)
+    $stats - get stats on meme sources and memes sent
     $... more commands awimbawayonthereway
     `
     msg.channel.send(helpText);
@@ -46,6 +50,10 @@ function printQuoteText(msg){
 
 function printRandomHotMeme(msg){
     redditBot({type: enums.randomMeme, msg});
+}
+
+function printRedditBotDevStats(msg){
+    redditBot({type: enums.debugStats, msg})
 }
 
 client.login(process.env.SECRET);
