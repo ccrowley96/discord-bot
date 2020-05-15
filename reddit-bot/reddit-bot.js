@@ -6,7 +6,7 @@ const moment = require('moment-timezone');
 moment().tz("America/Los_Angeles").format();
 const fs = require('fs');
 
-let dev = false
+let dev = false;
 
 let memeSources = [{id: 'dankmemes', weight: 2}, 
                    {id: 'memes', weight: 2},
@@ -76,13 +76,13 @@ const redditBot = function(config){
                 return `\t\tsubreddit: ${source.id}, chance: ${getSourceProbabilityString(source.id)}, number stored: ${source.id in vault ? vault[source.id].length : 0}, ` +
                 `number sent: ${source.id in vault ? vault[source.id].countSent : 0}` 
             }).join('\n');
-            statString += `${vault.type}\n` +
+            statString += `${vault.type} ${vault.type == enums.topMeme ? '['+getTimeFrameString(vault)+']' : ''}\n` +
                               `\tMemes last refreshed ${vault.lastUpdate ? (displayTimeString(vault.lastUpdate)) : 'a long time ago in a galaxy far away'}\n` +                               
                               `\tMeme sources: \n${memeSourceString}\n` +
                               `\tTotal meme count: ${vault.memeCount}\n`;         
         }
 
-        statString += 
+        statString += (dev ? '[dev]\n' : '') + 
         `Unique memes sent since last refresh: ${MemeVault.memeCache.length}\n` +
         `Cache hits since last refresh: ${MemeVault.cacheHits} -- (# duplicate memes avoided)`;
         
@@ -164,7 +164,7 @@ async function sendRandomRedditMeme(msg, type, timeFrame = 'week'){
     let selectedMeme = memeVault[randomSource][randomIdx];
 
     //Check that meme hasn't been sent already
-    if(MemeVault.memeCache.indexOf(selectedMeme.url) != -1){
+    if(!selectedMeme || MemeVault.memeCache.indexOf(selectedMeme.url) != -1){
         // Meme already sent (retry)
         MemeVault.cacheHits ++;
         // If 5 consecutive retries, refresh memes & cache
