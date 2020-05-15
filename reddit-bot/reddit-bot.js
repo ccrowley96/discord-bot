@@ -30,14 +30,6 @@ const r = new snoowrap({
     refreshToken: process.env.REFRESH_TOKEN
 })
 
-//Testing
-// r.getSubreddit('memes')
-//         .getHot()
-//         .fetchMore({amount: 1, append: false})
-//         .then(posts => {
-//             console.log(posts.toJSON())
-//         }).catch(err => reject(err));
-
 const displayTimeString = (millis) => {
     return moment(millis).tz("America/Los_Angeles").format("dddd, MMMM Do YYYY, h:mm:ss a z")
 }
@@ -134,7 +126,7 @@ async function setMemes({amount, subreddit}){
         r.getSubreddit(subreddit)
         .getHot()
         .fetchMore({amount, append: false})
-        .filter(post => post.url)
+        .filter(post => !post.is_self) // make sure post is not just text
         .map(post => {
             return {url: post.url, 
                     title: post.title,
