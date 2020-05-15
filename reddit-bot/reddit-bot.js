@@ -6,8 +6,7 @@ const moment = require('moment-timezone');
 moment().tz("America/Los_Angeles").format();
 const fs = require('fs');
 
-let dev = true
-
+let dev = false
 
 let memeSources = [{id: 'dankmemes', weight: 2}, 
                    {id: 'memes', weight: 2},
