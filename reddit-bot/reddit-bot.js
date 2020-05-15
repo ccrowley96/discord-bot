@@ -5,10 +5,14 @@ const rwc = require('random-weighted-choice');
 const moment = require('moment-timezone');
 moment().tz("America/Los_Angeles").format();
 
-let memeSources = [{id: 'dankmemes', weight: 3}, 
-                   {id: 'memes', weight: 4},
+let memeSources = [{id: 'dankmemes', weight: 2}, 
+                   {id: 'memes', weight: 2},
                    {id: 'trebuchetmemes', weight: 1},
-                   {id: 'PrequelMemes', weight: 2}]
+                   {id: 'PrequelMemes', weight: 1},
+                   {id: 'DeepFriedMemes', weight: 1},
+                   {id: 'nukedmemes', weight: 1},
+                   {id: 'MemeEconomy', weight: 2}
+                  ]
 
 let memeVault = {
     unset: true,
@@ -95,7 +99,7 @@ async function sendRandomRedditMeme(msg){
         memeVault.unset = false;
     }
     //check time diff
-    else if((Date.now() - timeDiff.lastUpdate) > timeDiff.thirtyMinutes){
+    else if((Date.now() - timeDiff.lastUpdate) > timeDiff.hour){
         await updateMemes(msg)
     } 
 
