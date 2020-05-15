@@ -135,6 +135,8 @@ async function setMemes({amount, subreddit}){
             return {url: post.url, 
                     title: post.title,
                     ups: String(post.ups)}
+        }).filter(post => {
+            return post.ups > 10 // ensure min of 10 upvotes
         })
         .then(memez => {
             timeDiff.lastUpdate = Date.now();
