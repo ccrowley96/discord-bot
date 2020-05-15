@@ -71,8 +71,8 @@ async function updateMemes(msg){
     //Fetch new memes from all sources
     for(let sub of memeSources){
         let amount = 100;
-        memeVault.memeCount += amount;
         memeVault[sub.id] = await setMemes({amount, subreddit: sub.id});
+        memeVault.memeCount += memeVault[sub.id].length
         Object.defineProperty(memeVault[sub.id], "countSent", {
             enumerable: false,
             writable: true,
